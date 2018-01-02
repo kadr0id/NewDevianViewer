@@ -180,6 +180,10 @@ public class TumblrPagerActivity extends Activity {
                     });
                 }
 
+
+
+
+
                 @Override
                 public void onError() {
                     spinner.setVisibility(View.GONE);

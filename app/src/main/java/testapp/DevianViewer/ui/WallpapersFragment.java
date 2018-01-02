@@ -9,7 +9,10 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -56,7 +59,8 @@ public class WallpapersFragment extends Fragment implements PermissionsFragment 
 
 	SwipeRefreshLayout mSwipeRefreshLayout;
 
-
+	final int CONTEXT_MENU_ITEM = 1;
+	final int CONTEXT_MENU_ITEMS = 1;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,21 +68,22 @@ public class WallpapersFragment extends Fragment implements PermissionsFragment 
 		setHasOptionsMenu(true);
 
 
-
-
 		String username = this.getArguments().getStringArray(MainActivity.FRAGMENT_DATA)[0];
 		baseurl = "https://"+username+".tumblr.com/api/read/json?type=photo&num=" + perpage + "&start=";
 		//baseurl = "https://backend.deviantart.com/oembed?url=https%3A%2F%2F"+username+".deviantart.com%2Fgallery";
-		
+
 
 		listView = (GridView) ll.findViewById(R.id.gridview);
-		
-		listView.setOnItemClickListener(new OnItemClickListener() {
+
+        registerForContextMenu(listView);
+
+        listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				startImagePagerActivity(position);
 			}
 		});
+		
 		
 		listView.setOnScrollListener(new OnScrollListener() {
 			@Override
@@ -138,6 +143,15 @@ public class WallpapersFragment extends Fragment implements PermissionsFragment 
 
 
 	}
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(0, CONTEXT_MENU_ITEM, 0, "first item");
+        menu.add(0, CONTEXT_MENU_ITEMS, 0, "second item");
+    }
+
+
 	
 	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
